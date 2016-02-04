@@ -29,7 +29,7 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("Hello, world")
 	self.write("   ")
-	self.write(self.request.host)
+	self.write(self.request.url)
 
 
 def main():
