@@ -29,9 +29,9 @@ def checkSignatureWX(signature = '',timestamp = '',nonce = '',token = ''):
     tempList = [token,timestamp,nonce]
     tempList2 = sorted(tempList)
     str_ = tempList2[0] + tempList2[1] + tempList2[2]
-    if (str(hashlib.sha1(str_).hexdigest()) == signature)
+    if (str(hashlib.sha1(str_).hexdigest()) == signature):
         return 1
-    else
+    else:
         return 0
 
 
@@ -40,20 +40,30 @@ def checkSignatureWX(signature = '',timestamp = '',nonce = '',token = ''):
 
 
 class MainHandler(tornado.web.RequestHandler):
+
+    def post(self):
+	self.write(self.request.body)
+	print self.request.body
+
     def get(self):
         uri = self.request.uri
         param_list = uri.split('&')
         token = 'nan_first_wx_token'
-        for i in range(len()):
-            pos = param_list[i].find('=') + 1
-            if (param_list[i].find('signature') > 0):
+        for i in range(len(param_list)):
+            #self.write(str(i))
+	    #self.write('/n')
+	    pos = param_list[i].find('=') + 1
+            if (param_list[i].find('signature') >= 0):
                 signature = param_list[i][pos:]
-            if (param_list[i].find('timestamp') > 0):
+            if (param_list[i].find('timestamp') >= 0):
                 timestamp = param_list[i][pos:]
-            if (param_list[i].find('nonce') > 0):
+            if (param_list[i].find('nonce') >= 0):
                 nonce = param_list[i][pos:]
-            if (param_list[i].find('echostr') > 0):
+            if (param_list[i].find('echostr') >= 0):
                 echostr = param_list[i][pos:]
+
+	#self.write(echostr)
+	#self.write('   ')
 
         if (checkSignatureWX(signature,timestamp,nonce,token) == 1):
             self.write(echostr)
